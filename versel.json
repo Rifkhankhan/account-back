@@ -2,7 +2,8 @@
     "version": 2,
     "routes": [
         {
-            "handle": "vercel"
+            "src": "/(.*)",
+            "dest": "/app.js"
         }
     ]
 }
