@@ -1,13 +1,13 @@
 // const User = require('../Models/Blog');
-const Expanse = require('../Models/ExpanseModel')
+const Loan = require('../Models/LoanModel')
 const { v4: uuid } = require('uuid')
 
-exports.CreateExpanse = async (req, res, next) => {
-	console.log(req.body)
-	const newProduct = new Expanse({
+exports.CreateLoan = async (req, res, next) => {
+	const newProduct = new Loan({
 		date: req.body.date,
 		amount: req.body.amount,
-		narration: req.body.narration
+		narration: req.body.narration,
+		type: req.body.narration
 	})
 
 	try {
@@ -20,10 +20,10 @@ exports.CreateExpanse = async (req, res, next) => {
 }
 
 // get all products
-exports.getExpanses = async (req, res, next) => {
+exports.getLoans = async (req, res, next) => {
 	try {
-		const products = await Expanse.find()
-		res.json(products)
+		const Loans = await Loan.find()
+		res.json(Loans)
 	} catch (err) {
 		return next(err)
 	}
@@ -54,11 +54,11 @@ exports.getExpanses = async (req, res, next) => {
 // };
 
 // //get all products of a shop
-exports.deleteExpanse = async (req, res, next) => {
+exports.deleteLoan = async (req, res, next) => {
 	const { id } = req.params.id
 
 	try {
-		await Expanse.findByIdAndDelete(req.params.id)
+		await Loan.findByIdAndDelete(req.params.id)
 		res.json({ message: 'Successfully deleted' })
 	} catch (err) {
 		return next(err)
@@ -66,26 +66,26 @@ exports.deleteExpanse = async (req, res, next) => {
 }
 
 // get product
-exports.getExpanse = async (req, res, next) => {
+exports.getLoan = async (req, res, next) => {
 	const { id } = req.params.id
 
 	try {
-		const expanse = await Expanse.findById(req.params.id)
-		res.json(expanse)
+		const Loan = await Loan.findById(req.params.id)
+		res.json(Loan)
 	} catch (err) {
 		return next(err)
 	}
 }
 
 // //get all products of a shop
-exports.updateExpanse = async (req, res, next) => {
+exports.updateLoan = async (req, res, next) => {
 	const { id } = req.params.id
 	try {
-		const product = await Expanse.findByIdAndUpdate(req.params.id, req.body, {
+		const product = await Loan.findByIdAndUpdate(req.params.id, req.body, {
 			new: true
 		})
 
-		res.json({ expanse: product })
+		res.json({ Loan: product })
 	} catch (err) {
 		return next(err)
 	}

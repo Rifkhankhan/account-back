@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const ReceiptSchema = new Schema(
+const LoanSchema = new Schema(
 	{
 		date: {
 			type: Date,
@@ -18,7 +18,7 @@ const ReceiptSchema = new Schema(
 		},
 		category: {
 			type: String,
-			default: 'cr'
+			default: 'loan'
 		},
 		type: {
 			type: String,
@@ -30,5 +30,5 @@ const ReceiptSchema = new Schema(
 	}
 )
 
-const ReceiptModel = mongoose.model('Receipt', ReceiptSchema)
-module.exports = ReceiptModel
+const LoanModel = mongoose.model('Loan', LoanSchema)
+module.exports = LoanModel

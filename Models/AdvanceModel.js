@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const ReceiptSchema = new Schema(
+const AdvanceSchema = new Schema(
 	{
 		date: {
 			type: Date,
@@ -18,7 +18,7 @@ const ReceiptSchema = new Schema(
 		},
 		category: {
 			type: String,
-			default: 'cr'
+			default: 'advance'
 		},
 		type: {
 			type: String,
@@ -30,5 +30,5 @@ const ReceiptSchema = new Schema(
 	}
 )
 
-const ReceiptModel = mongoose.model('Receipt', ReceiptSchema)
-module.exports = ReceiptModel
+const AdvanceModel = mongoose.model('Advance', AdvanceSchema)
+module.exports = AdvanceModel

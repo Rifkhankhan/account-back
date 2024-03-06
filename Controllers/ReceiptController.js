@@ -1,34 +1,33 @@
 // const User = require('../Models/Blog');
-const Receipt = require('../Models/ReceiptModel');
-const { v4: uuid } = require('uuid');
+const Receipt = require('../Models/ReceiptModel')
+const { v4: uuid } = require('uuid')
 
 exports.CreateReceipt = async (req, res, next) => {
-  const newProduct = new Receipt({
-    date: req.body.date,
-    amount: req.body.amount,
-    narration: req.body.narration,
-    type: 'cr',
-    category: req.body.category
-  });
+	const newProduct = new Receipt({
+		date: req.body.date,
+		amount: req.body.amount,
+		narration: req.body.narration,
+		type: req.body.type
+	})
 
-  try {
-    await newProduct.save();
-  } catch (err) {
-    return next(err);
-  }
+	try {
+		await newProduct.save()
+	} catch (err) {
+		return next(err)
+	}
 
-  res.json(newProduct);
-};
+	res.json(newProduct)
+}
 
 // get all products
 exports.getReceipts = async (req, res, next) => {
-  try {
-    const products = await Receipt.find();
-    res.json(products);
-  } catch (err) {
-    return next(err);
-  }
-};
+	try {
+		const products = await Receipt.find()
+		res.json(products)
+	} catch (err) {
+		return next(err)
+	}
+}
 
 // //get all products of a shop
 // exports.getShopProducts = async (req, res, next) => {
@@ -56,41 +55,41 @@ exports.getReceipts = async (req, res, next) => {
 
 // //get all products of a shop
 exports.deleteReceipt = async (req, res, next) => {
-  const { id } = req.params.id;
+	const { id } = req.params.id
 
-  try {
-    await Receipt.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Successfully deleted' });
-  } catch (err) {
-    return next(err);
-  }
-};
+	try {
+		await Receipt.findByIdAndDelete(req.params.id)
+		res.json({ message: 'Successfully deleted' })
+	} catch (err) {
+		return next(err)
+	}
+}
 
 // get product
 exports.getReceipt = async (req, res, next) => {
-  const { id } = req.params.id;
+	const { id } = req.params.id
 
-  try {
-    const Receipt = await Receipt.findById(req.params.id);
-    res.json(Receipt);
-  } catch (err) {
-    return next(err);
-  }
-};
+	try {
+		const Receipt = await Receipt.findById(req.params.id)
+		res.json(Receipt)
+	} catch (err) {
+		return next(err)
+	}
+}
 
 // //get all products of a shop
 exports.updateReceipt = async (req, res, next) => {
-  const { id } = req.params.id;
-  try {
-    const product = await Receipt.findByIdAndUpdate(req.params.id, req.body, {
-      new: true
-    });
+	const { id } = req.params.id
+	try {
+		const product = await Receipt.findByIdAndUpdate(req.params.id, req.body, {
+			new: true
+		})
 
-    res.json({ receipt: product });
-  } catch (err) {
-    return next(err);
-  }
-};
+		res.json({ receipt: product })
+	} catch (err) {
+		return next(err)
+	}
+}
 // exports.getWishList = async (req, res, next) => {
 // 	const {id} = req.params
 // 	try {
