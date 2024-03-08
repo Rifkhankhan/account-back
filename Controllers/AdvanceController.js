@@ -7,7 +7,7 @@ exports.CreateAdvance = async (req, res, next) => {
 		date: req.body.date,
 		amount: req.body.amount,
 		narration: req.body.narration,
-		type: req.body.narration
+		type: req.body.type
 	})
 
 	try {

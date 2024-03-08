@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require('express').Router()
 const {
 	usersignin,
 
@@ -9,18 +9,23 @@ const {
 
 	createCustomer,
 	getCustomers,
-	updateCustomer
-} = require('../Controllers/usercontroller.js');
+	updateCustomer,
+	autoLogin,
+	Activation
+} = require('../Controllers/usercontroller.js')
 
 // get user
-router.post('/', createCustomer);
-router.get('/', getCustomers);
-router.put('/:id', updateCustomer);
+router.post('/createUser', createCustomer)
+router.post('/autoLogin/:token', autoLogin)
+router.post('/signin', usersignin)
+router.get('/', getCustomers)
+router.put('/:id', updateCustomer)
+router.put('/:id', updateCustomer)
 
 // get user by token
 
 // user sign in
-router.post('/signin', usersignin);
+router.put('/activate/:id', Activation)
 
 // upload profile image
 
@@ -31,4 +36,4 @@ router.post('/signin', usersignin);
 // router.post("/forgot-password", forgotPassword)
 // router.put('/reset-password/:resetPasswordToken', resetPassword);
 
-module.exports = router;
+module.exports = router

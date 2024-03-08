@@ -9,7 +9,6 @@ const UserModel = require('../Models/User')
 // user sign in controller
 exports.usersignin = async (req, res) => {
 	const { name, password } = req.body
-
 	// Check if email and password is provided
 	if (!name || !password) {
 		return res
@@ -54,17 +53,19 @@ exports.usersignin = async (req, res) => {
 }
 
 exports.autoLogin = async (req, res) => {
-	const token = req.body.token
-	const cleanToken = token.replace(/^"(.*)"$/, '$1')
+	const cleanToken = req.params.token.replace(/^"(.*)"$/, '$1')
 
 	const secretKey = '9892c70a8da9ad71f1829ad03c115408'
 	// verify and decode the token
 	let userId
+	let tokenExpired
 	jwt.verify(cleanToken, secretKey, (err, decode) => {
 		if (err) {
 			console.log('Error verifying token', err.message)
+			if (err.message) {
+				tokenExpired = true
+			}
 		} else {
-			console.log(decode)
 			userId = decode.id
 		}
 	})
@@ -84,55 +85,12 @@ exports.autoLogin = async (req, res) => {
 		)
 
 		// sending the user object and token as the response
-		res.status(200).json({ success: true, token, user: user })
-	} catch (error) {
-		res
-			.status(500)
-			.json({ message: 'Something went wrong', error: error.message })
-	}
-}
-
-// user sign up controller
-exports.usersignup = async (req, res) => {
-	const { name, password } = req.body
-
-	let users
-	try {
-		users = await UserModel.find()
-	} catch (err) {
-		return next(err)
-	}
-
-	let UserId = 'RifkhanApplicationId' + users.length
-
-	try {
-		// checking email already exists
-		const checkEmail = await UserModel.findOne({ email })
-
-		if (checkEmail) {
-			return res
-				.status(409)
-				.json({ message: 'User with this email already exists' })
+		if (tokenExpired) {
+			res.status(200).json({ success: false })
+		} else {
+			res.status(200).json({ success: true, token, user: user })
 		}
-
-		// creating a new user
-		const user = await UserModel.create({
-			name,
-			email,
-			password,
-			homeDeliveryUserId: UserId
-		})
-
-		// creating a token
-
-		const token = jwt.sign(
-			{ email: user.email, id: user._id },
-			'9892c70a8da9ad71f1829ad03c115408',
-			{ expiresIn: '1h' }
-		)
-
-		// sending the user object and token as the response
-		res.status(200).json({ success: true, result: user, token })
+		
 	} catch (error) {
 		res
 			.status(500)
@@ -142,6 +100,7 @@ exports.usersignup = async (req, res) => {
 
 // user sign up controller
 exports.createCustomer = async (req, res) => {
+	console.log(req.body)
 	let users
 	try {
 		users = await UserModel.find()
@@ -153,8 +112,8 @@ exports.createCustomer = async (req, res) => {
 
 	try {
 		// checking user already exists
-		const userExist = await UserModel.findOne({ name: req.body.name })
 
+		const userExist = await UserModel.findOne({ name: req.body.name })
 		if (userExist) {
 			return res.status(409).json({ message: 'User already exists now' })
 		}
@@ -167,7 +126,7 @@ exports.createCustomer = async (req, res) => {
 			expansePermission: req.body.expansePermission,
 			expanseEditPermission: req.body.expanseEditPermission,
 			expanseDeletePermission: req.body.expanseDeletePermission,
-			receiptPermission: req.body.expansePermission,
+			receiptPermission: req.body.receiptPermission,
 			receiptEditPermission: req.body.receiptEditPermission,
 			receiptDeletePermission: req.body.receiptDeletePermission
 		})
@@ -291,7 +250,7 @@ exports.Activation = async (req, res, next) => {
 	let user
 
 	try {
-		user = await User.findById(userID)
+		user = await UserModel.findById(userID)
 	} catch (err) {
 		return next(err)
 	}
@@ -300,11 +259,12 @@ exports.Activation = async (req, res, next) => {
 
 	try {
 		await user.save()
+		res.status(200).json({ success: true })
 	} catch (err) {
+		res.status(200).json({ success: false })
+
 		return next(err)
 	}
-
-	res.json(user)
 }
 
 // delete user controller

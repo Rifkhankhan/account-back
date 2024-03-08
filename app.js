@@ -19,8 +19,12 @@ app.use(cors())
 app.use(express.static(__dirname + '/'))
 
 const ExpanseRouter = require('./Routes/ExpanseRouter')
+const AccountRequestRouter = require('./Routes/AccountRequestRouter')
+const AdvanceRouter = require('./Routes/AdvanceRouter')
+const LoanRouter = require('./Routes/LoanRouter')
 const ReceiptRouter = require('./Routes/ReceiptRouter')
 const userrouter = require('./Routes/userrouter')
+const AccountRequestModel = require('./Models/AccountRequestModel')
 
 //need to uncommand to deploy
 app.use(
@@ -93,8 +97,11 @@ app.use((req, res, next) => {
 // here route should be mentioned
 
 app.use('/expanse', ExpanseRouter)
+app.use('/accountRequest', AccountRequestRouter)
 app.use('/user', userrouter)
 app.use('/receipt', ReceiptRouter)
+app.use('/loan', LoanRouter)
+app.use('/advance', AdvanceRouter)
 
 // for unsupported router error handler
 app.use((error, req, res, next) => {

@@ -3,7 +3,6 @@ const Expanse = require('../Models/ExpanseModel')
 const { v4: uuid } = require('uuid')
 
 exports.CreateExpanse = async (req, res, next) => {
-	console.log(req.body)
 	const newProduct = new Expanse({
 		date: req.body.date,
 		amount: req.body.amount,
