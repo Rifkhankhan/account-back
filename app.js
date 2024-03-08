@@ -28,10 +28,9 @@ const AccountRequestModel = require('./Models/AccountRequestModel')
 
 //need to uncommand to deploy
 app.use
-	cors({
-		origin: 'https://hopper-front.vercel.app/'
-	})
-)
+cors({
+	origin: 'https://hopper-front.vercel.app/'
+})
 
 app.use(express.static(path.join(__dirname + '/Public')))
 
