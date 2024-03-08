@@ -27,7 +27,7 @@ const userrouter = require('./Routes/userrouter')
 const AccountRequestModel = require('./Models/AccountRequestModel')
 
 //need to uncommand to deploy
-app.use(
+app.use
 	cors({
 		origin: 'https://hopper-front.vercel.app/'
 	})

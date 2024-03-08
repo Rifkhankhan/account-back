@@ -201,6 +201,7 @@ exports.CreateRequest = async (req, res, next) => {
 
 // get all products
 exports.getRequests = async (req, res, next) => {
+	console.log('geto')
 	try {
 		const products = await AccountRequestModel.find()
 		res.json(products)
