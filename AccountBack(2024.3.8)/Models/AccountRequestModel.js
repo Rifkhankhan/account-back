@@ -24,12 +24,12 @@ const AccountRequestSchema = new Schema(
 		},
 		balance: {
 			type: Number,
-			required: false,
+			required: true,
 			default: 0
 		},
 		oppBalance: {
 			type: Number,
-			required: false,
+			required: true,
 			default: 0
 		},
 		user: {

@@ -3,8 +3,8 @@ const {
 	CreateRequest,
 	getRequest,
 	getRequests,
-	updateRequest,
-	ToggleRequest
+	DisableRequest,
+	updateRequest
 } = require('../Controllers/AccountRequestController')
 
 // add new request
@@ -16,10 +16,10 @@ router.get('/', getRequests)
 // update
 router.put('/:id', updateRequest)
 
-// ToggleDisable
-router.put('/disable/:id', ToggleRequest)
-
 // get product
 router.get('/:id', getRequest)
+
+// delete product
+router.delete('/:id', DisableRequest)
 
 module.exports = router

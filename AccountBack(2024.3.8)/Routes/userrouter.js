@@ -11,9 +11,7 @@ const {
 	getCustomers,
 	updateCustomer,
 	autoLogin,
-	Activation,
-	resetUserPassword,
-	updatePassword
+	Activation
 } = require('../Controllers/usercontroller.js')
 
 // get user
@@ -22,8 +20,7 @@ router.post('/autoLogin/:token', autoLogin)
 router.post('/signin', usersignin)
 router.get('/', getCustomers)
 router.put('/:id', updateCustomer)
-router.put('/reset/:id', resetUserPassword)
-router.put('/updatePassword/:id', updatePassword)
+router.put('/:id', updateCustomer)
 
 // get user by token
 

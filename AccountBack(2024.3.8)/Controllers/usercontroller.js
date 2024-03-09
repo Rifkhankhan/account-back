@@ -9,8 +9,6 @@ const UserModel = require('../Models/User')
 // user sign in controller
 exports.usersignin = async (req, res) => {
 	const { name, password } = req.body
-	console.log(req.body)
-
 	// Check if email and password is provided
 	if (!name || !password) {
 		return res
@@ -92,6 +90,7 @@ exports.autoLogin = async (req, res) => {
 		} else {
 			res.status(200).json({ success: true, token, user: user })
 		}
+		
 	} catch (error) {
 		res
 			.status(500)
@@ -122,22 +121,14 @@ exports.createCustomer = async (req, res) => {
 		// creating a new user
 		const user = await UserModel.create({
 			name: req.body.name,
-			password: '123456',
+			password: '12345678',
 			smartId: UserId,
 			expansePermission: req.body.expansePermission,
 			expanseEditPermission: req.body.expanseEditPermission,
 			expanseDeletePermission: req.body.expanseDeletePermission,
 			receiptPermission: req.body.receiptPermission,
 			receiptEditPermission: req.body.receiptEditPermission,
-			receiptDeletePermission: req.body.receiptDeletePermission,
-
-			advancePermission: req.body.advancePermission,
-			advanceEditPermission: req.body.advanceEditPermission,
-			advanceDeletePermission: req.body.advanceDeletePermission,
-
-			loanPermission: req.body.loanPermission,
-			loanEditPermission: req.body.loanEditPermission,
-			loanDeletePermission: req.body.loanDeletePermission
+			receiptDeletePermission: req.body.receiptDeletePermission
 		})
 
 		// sending the user object and token as the response
@@ -166,6 +157,7 @@ exports.getCustomers = async (req, res) => {
 
 // get all products of a shop
 exports.updateCustomer = async (req, res, next) => {
+	console.log(req.body)
 	try {
 		const product = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
 			new: true
@@ -179,38 +171,11 @@ exports.updateCustomer = async (req, res, next) => {
 
 exports.resetUserPassword = async (req, res, next) => {
 	try {
-		const data = {
-			password: '123456'
-		}
+		const data = { ...req.body, password: '12345678' }
+		const product = await UserModel.findByIdAndUpdate(req.params.id, data, {
+			new: true
+		})
 
-		const encryptPassword = await bcrypt.hash(data.password, 12)
-		const userData = await UserModel.findByIdAndUpdate(
-			req.params.id,
-			{ password: encryptPassword },
-			{
-				new: true
-			}
-		)
-
-		console.log(userData)
-		res.status(200).json({ success: true })
-	} catch (err) {
-		return next(err)
-	}
-}
-
-exports.updatePassword = async (req, res, next) => {
-	try {
-		const encryptPassword = await bcrypt.hash(req.body.password, 12)
-		const userData = await UserModel.findByIdAndUpdate(
-			req.params.id,
-			{ password: encryptPassword },
-			{
-				new: true
-			}
-		)
-
-		console.log(userData)
 		res.status(200).json({ success: true })
 	} catch (err) {
 		return next(err)

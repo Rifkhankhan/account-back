@@ -22,9 +22,9 @@ const UserSchema = new Schema(
 		password: {
 			type: String,
 			required: true,
-			minlength: 6,
+			minlength: 8,
 			// select set to false so password doesn't come when querying automatically
-			select: true
+			select: false
 		},
 		expansePermission: {
 			type: String,
@@ -48,32 +48,6 @@ const UserSchema = new Schema(
 			default: 'no'
 		},
 		receiptDeletePermission: {
-			type: String,
-			default: 'no'
-		},
-		advancePermission: {
-			type: String,
-			default: 'no'
-		},
-
-		advanceEditPermission: {
-			type: String,
-			default: 'no'
-		},
-		advanceDeletePermission: {
-			type: String,
-			default: 'no'
-		},
-		loanPermission: {
-			type: String,
-			default: 'no'
-		},
-
-		loanEditPermission: {
-			type: String,
-			default: 'no'
-		},
-		loanDeletePermission: {
 			type: String,
 			default: 'no'
 		},
@@ -113,7 +87,6 @@ UserSchema.pre('save', async function (next) {
 
 	// hashing the with difficulty level 12
 	this.password = await bcrypt.hash(this.password, 12)
-
 	next()
 })
 
