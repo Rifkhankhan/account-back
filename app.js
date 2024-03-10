@@ -14,7 +14,7 @@ const userrouter = require('./Routes/userrouter')
 const AccountRequestModel = require('./Models/AccountRequestModel')
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 10000
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json({ limit: '50mb' }))
@@ -55,21 +55,6 @@ app.use((req, res, next) => {
 	next()
 })
 
-// WebSocket Server
-const wsServer = new ws.Server({
-	server: app.listen(PORT),
-	host: 'localhost',
-	path: '/'
-})
-
-wsServer.on('connection', w => {
-	console.log('someone connected')
-	w.on('message', msg => {
-		console.log('got message', msg)
-		w.send(msg)
-	})
-})
-
 // Connect to MongoDB
 mongoose
 	.connect(
@@ -81,6 +66,29 @@ mongoose
 	.catch(error => {
 		console.log('Error connecting to MongoDB:', error)
 	})
+
+// WebSocket Server
+const wsServer = new ws.Server({ noServer: true })
+
+wsServer.on('connection', w => {
+	console.log('someone connected')
+	w.on('message', msg => {
+		console.log('got message', msg)
+		w.send(msg)
+	})
+})
+
+// Express Server
+const expressServer = app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}`)
+})
+
+// Upgrade HTTP server to support WebSocket
+expressServer.on('upgrade', (request, socket, head) => {
+	wsServer.handleUpgrade(request, socket, head, socket => {
+		wsServer.emit('connection', socket, request)
+	})
+})
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -100,9 +108,4 @@ app.use((error, req, res, next) => {
 			.status(error.code || 500)
 			.json({ message: error.message || 'An unknown error occurred!' })
 	}
-})
-
-// Start the server
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`)
 })
