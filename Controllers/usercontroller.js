@@ -9,7 +9,6 @@ const UserModel = require('../Models/User')
 // user sign in controller
 exports.usersignin = async (req, res) => {
 	const { name, password } = req.body
-	console.log(req.body)
 
 	// Check if email and password is provided
 	if (!name || !password) {
@@ -63,7 +62,6 @@ exports.autoLogin = async (req, res) => {
 	let tokenExpired
 	jwt.verify(cleanToken, secretKey, (err, decode) => {
 		if (err) {
-			console.log('Error verifying token', err.message)
 			if (err.message) {
 				tokenExpired = true
 			}
@@ -101,7 +99,6 @@ exports.autoLogin = async (req, res) => {
 
 // user sign up controller
 exports.createCustomer = async (req, res) => {
-	console.log(req.body)
 	let users
 	try {
 		users = await UserModel.find()
@@ -192,7 +189,6 @@ exports.resetUserPassword = async (req, res, next) => {
 			}
 		)
 
-		console.log(userData)
 		res.status(200).json({ success: true })
 	} catch (err) {
 		return next(err)
@@ -210,7 +206,6 @@ exports.updatePassword = async (req, res, next) => {
 			}
 		)
 
-		console.log(userData)
 		res.status(200).json({ success: true })
 	} catch (err) {
 		return next(err)
@@ -223,9 +218,8 @@ exports.updateUser = async (req, res) => {
 	try {
 		let data = req.body
 		const user = await UserModel.findById(userID)
-		console.log(req.body.password.length)
+
 		if (req.body.password.length > 20) {
-			console.log('not changed')
 			// find user by userID and update the user with provided data
 			const userData = await UserModel.findByIdAndUpdate(userID, data, {
 				new: true
@@ -245,7 +239,6 @@ exports.updateUser = async (req, res) => {
 				token
 			})
 		} else {
-			console.log('changed')
 			data.password = await bcrypt.hash(req.body.password, 12)
 
 			// find user by userID and update the user with provided data

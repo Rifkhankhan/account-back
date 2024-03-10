@@ -14,7 +14,7 @@ const userrouter = require('./Routes/userrouter')
 const AccountRequestModel = require('./Models/AccountRequestModel')
 
 const app = express()
-const PORT = process.env.PORT || 10000
+const PORT = process.env.PORT || 5000
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json({ limit: '50mb' }))
